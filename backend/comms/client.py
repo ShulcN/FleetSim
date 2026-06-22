@@ -27,6 +27,7 @@ class RobotCommClient:
     async def start(self, host: str, port: int, state_period_s: float = 0.2) -> None:
         self._reader, self._writer = await asyncio.open_connection(host, port)
         self._writer.write(encode(register_message(self.robot.state.id)))
+        await self._writer.drain()
         self._running = True
         self._tasks = [
             asyncio.create_task(self._recv_loop()),
@@ -47,13 +48,12 @@ class RobotCommClient:
     async def _recv_loop(self) -> None:
         assert self._reader is not None
         while self._running:
-            data = await self._reader.read(4096)
-            if not data:
+            line = await self._reader.readline()
+            if not line:
                 break
             try:
-                message = json.loads(data.decode("utf-8"))
+                message = json.loads(line.decode("utf-8"))
             except json.JSONDecodeError:
-                print(f"[comm-client {self.robot.state.id}] bad json chunk")
                 continue
             if message.get("type") == "order":
                 self.on_order(message.get("robot_id"), waypoints_from_order(message))
@@ -63,6 +63,8 @@ class RobotCommClient:
         while self._running:
             try:
                 self._writer.write(encode(state_message(self.robot)))
+                await self._writer.drain()
             except Exception:
                 break
             await asyncio.sleep(period)
+

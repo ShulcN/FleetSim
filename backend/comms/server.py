@@ -13,6 +13,8 @@ class FleetCommServer:
 
     def __init__(self) -> None:
         self._server: asyncio.AbstractServer | None = None
+        
+        self._queues: dict[str, asyncio.Queue] = {}
         self._writers: dict[str, asyncio.StreamWriter] = {}
         self.latest_states: dict[str, dict[str, Any]] = {}
         self.on_state: Callable[[dict[str, Any]], None] | None = None
@@ -31,6 +33,7 @@ class FleetCommServer:
             except Exception:
                 pass
         self._writers.clear()
+        self._queues.clear()
         if self._server is not None:
             self._server.close()
             try:
@@ -40,19 +43,22 @@ class FleetCommServer:
             self._server = None
 
     def send(self, robot_id: str, message: dict[str, Any]) -> None:
-        writer = self._writers.get(robot_id)
-        if writer is None:
-            print(f"no connection for {robot_id}, dropping {message.get('type')}")
-            return
-        writer.write(encode(message))
+        self._queue_for(robot_id).put_nowait(message)
+
+    def _queue_for(self, robot_id: str) -> asyncio.Queue:
+        queue = self._queues.get(robot_id)
+        if queue is None:
+            queue = asyncio.Queue()
+            self._queues[robot_id] = queue
+        return queue
 
     async def _handle_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
-        data = await reader.read(4096)
-        if not data:
+        line = await reader.readline()
+        if not line:
             writer.close()
             return
         try:
-            hello = json.loads(data.decode("utf-8"))
+            hello = json.loads(line.decode("utf-8"))
         except json.JSONDecodeError:
             writer.close()
             return
@@ -62,25 +68,34 @@ class FleetCommServer:
 
         robot_id = str(hello["robot_id"])
         self._writers[robot_id] = writer
+        sender = asyncio.create_task(self._send_loop(robot_id, writer))
 
         try:
             await self._recv_loop(robot_id, reader)
         finally:
+            sender.cancel()
             self._writers.pop(robot_id, None)
             try:
                 writer.close()
             except Exception:
                 pass
 
+    async def _send_loop(self, robot_id: str, writer: asyncio.StreamWriter) -> None:
+        queue = self._queue_for(robot_id)
+        while True:
+            message = await queue.get()
+            writer.write(encode(message))
+            await writer.drain()
+
+
     async def _recv_loop(self, robot_id: str, reader: asyncio.StreamReader) -> None:
         while True:
-            data = await reader.read(4096)
-            if not data:
+            line = await reader.readline()
+            if not line:
                 break
             try:
-                message = json.loads(data.decode("utf-8"))
+                message = json.loads(line.decode("utf-8"))
             except json.JSONDecodeError:
-                print(f"bad json chunk from {robot_id}")
                 continue
             if message.get("type") == "state":
                 key = message.get("robot_id", robot_id)
