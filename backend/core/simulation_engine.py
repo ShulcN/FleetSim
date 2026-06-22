@@ -14,7 +14,7 @@ from backend.robots.commands import ControlCommand
 from backend.robots.controllers import Waypoint
 from backend.wms.fifo_validator import FifoValidator
 from backend.wms.orders import Order, OrderStatus, WmsScenario
-
+from backend.comms import FleetCommLink
 from .world_state import WorldConfig, WorldSnapshot
 
 
@@ -43,6 +43,10 @@ class SimulationEngine:
         self.collision_checker = CollisionChecker()
         self.last_collisions: list[dict] = []
         self.map_id = "factory_map"
+
+        self.use_comms = True
+        self.comms = FleetCommLink()
+        
         self._lock = asyncio.Lock()
 
     async def reset(
@@ -66,7 +70,21 @@ class SimulationEngine:
             self.last_collisions = []
             self.sim_time = 0.0
             self.status = "stopped"
+            await self._restart_comms()
             self._update_world_size_from_map_or_graph()
+            
+
+    def _apply_order_from_comms(self, robot_id: str | None, waypoints: list) -> None:
+        robot = self.robots.get(robot_id) if robot_id else None
+        if robot is not None:
+            robot.set_route(waypoints)
+
+    def _send_route(self, robot: RobotBase, order_id: str, waypoints: list) -> None:
+        if self.use_comms:
+            self.comms.send_order(robot.state.id, order_id, waypoints)
+        else:
+            robot.set_route(waypoints)
+
 
     async def configure_from_files(
         self,
@@ -92,6 +110,12 @@ class SimulationEngine:
                 collision_mode=collision_mode,
             ),
         )
+
+    async def _restart_comms(self) -> None:
+        await self.comms.stop()
+        if self.use_comms and self.robots:
+            await self.comms.start(self.robots.values(), self._apply_order_from_comms)
+
 
     async def add_robot(self, robot: RobotBase) -> None:
         async with self._lock:

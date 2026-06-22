@@ -77,6 +77,8 @@ async def lifespan(app: FastAPI):
             await loop_task
         except asyncio.CancelledError:
             pass
+        
+        await engine.comms.stop()
 
 
 app = FastAPI(title="Fleet Sim MVP", lifespan=lifespan)
