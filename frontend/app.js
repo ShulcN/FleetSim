@@ -222,6 +222,13 @@ function updateStatusPanel() {
       collision_mode: state.collision_mode,
       max_sim_time: state.max_sim_time,
       metrics: state.metrics_summary,
+      comms: state.comms
+        ? {
+            running: state.comms.running,
+            port: state.comms.port,
+            robots_connected: state.comms.robots_connected,
+          }
+        : null,
       robots: (state.robots || []).map((r) => ({
         id: r.id,
         status: r.status,

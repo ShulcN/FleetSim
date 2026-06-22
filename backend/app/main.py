@@ -78,6 +78,8 @@ async def lifespan(app: FastAPI):
         except asyncio.CancelledError:
             pass
 
+        await engine.comms.stop()
+
 
 app = FastAPI(title="Fleet Sim MVP", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
@@ -97,6 +99,16 @@ async def get_state():
 async def start_simulation():
     await engine.start()
     return {"ok": True, "status": "running"}
+
+
+@app.get("/api/comms/status")
+async def comms_status():
+    return engine.comms.status
+
+
+@app.get("/api/comms/states")
+async def comms_states():
+    return engine.comms.reported_states
 
 
 @app.post("/api/simulation/pause")
