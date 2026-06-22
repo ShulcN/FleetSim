@@ -1,0 +1,73 @@
+{
+  "robots": [
+    {
+      "id": "R1",
+      "type": "differential_drive",
+      "color": "#3b82f6",
+      "initial_pose": {
+        "x": 2.0,
+        "y": 2.0,
+        "theta": 0.0
+      },
+      "footprint": {
+        "length": 0.8,
+        "width": 0.45
+      },
+      "parameters": {
+        "max_linear": 1.2,
+        "max_angular": 1.8
+      },
+      "route_follower": {
+        "max_linear": 0.8,
+        "max_angular": 1.6,
+        "waypoint_tolerance": 0.18
+      }
+    },
+    {
+      "id": "R2",
+      "type": "differential_drive",
+      "color": "#ef4444",
+      "initial_pose": {
+        "x": 5.0,
+        "y": 4.0,
+        "theta": 1.57
+      },
+      "footprint": {
+        "length": 0.8,
+        "width": 0.45
+      },
+      "parameters": {
+        "max_linear": 1.0,
+        "max_angular": 1.5
+      },
+      "route_follower": {
+        "max_linear": 0.7,
+        "max_angular": 1.3,
+        "waypoint_tolerance": 0.18
+      }
+    },
+    {
+      "id": "R3",
+      "type": "differential_drive",
+      "color": "#a855f7",
+      "initial_pose": {
+        "x": 16.0,
+        "y": 9.0,
+        "theta": 3.14
+      },
+      "footprint": {
+        "length": 0.8,
+        "width": 0.45
+      },
+      "parameters": {
+        "max_linear": 1.0,
+        "max_angular": 1.5
+      },
+      "route_follower": {
+        "max_linear": 0.7,
+        "max_angular": 1.3,
+        "waypoint_tolerance": 0.18
+      }
+    }
+  ]
+}

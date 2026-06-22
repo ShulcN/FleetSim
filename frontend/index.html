@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fleet Sim MVP</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <h1>Fleet Sim MVP</h1>
+
+        <section class="panel">
+          <h2>Simulation</h2>
+          <label>
+            Duration, s
+            <input id="durationInput" type="number" value="120" min="1" step="1" />
+          </label>
+          <label>
+            Collision mode
+            <select id="collisionModeSelect">
+              <option value="count_only">Count only</option>
+              <option value="stop_on_collision">Stop on collision</option>
+            </select>
+          </label>
+          <div class="button-grid">
+            <button id="loadDemoBtn">Load demo</button>
+            <button id="configureStartBtn">Configure & start</button>
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="resumeBtn">Resume</button>
+            <button id="stopBtn" class="danger">Stop</button>
+          </div>
+          <a id="exportStatsLink" href="/api/simulation/export-stats" download>Export stats JSON</a>
+        </section>
+
+        <section class="panel">
+          <h2>Input files</h2>
+          <label>DXF map<input id="mapFile" type="file" accept=".dxf" /></label>
+          <label>GeoJSON graph<input id="graphFile" type="file" accept=".geojson,.json" /></label>
+          <label>Fleet JSON<input id="fleetFile" type="file" accept=".json" /></label>
+          <label>WMS scenario JSON<input id="scenarioFile" type="file" accept=".json" /></label>
+          <p class="hint">If a file is not selected, the backend uses the included demo file.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Manual control</h2>
+          <label>
+            Robot ID
+            <input id="robotIdInput" value="R1" />
+          </label>
+          <div class="button-grid">
+            <button data-cmd="forward">W / Forward</button>
+            <button data-cmd="backward">S / Backward</button>
+            <button data-cmd="left">A / Left</button>
+            <button data-cmd="right">D / Right</button>
+            <button data-cmd="stop">Space / Stop</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Status</h2>
+          <pre id="statusBox">Connecting...</pre>
+        </section>
+
+        <section class="panel">
+          <h2>Orders</h2>
+          <div id="ordersBox" class="list"></div>
+        </section>
+      </aside>
+
+      <main id="main">
+        <canvas id="canvas"></canvas>
+      </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

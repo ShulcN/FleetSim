@@ -1,0 +1,422 @@
+{
+  "type": "FeatureCollection",
+  "name": "main",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G12-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          165483.53452854618,
+          60965.47480975747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G12-2",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          171592.97157466793,
+          60988.102354372735
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G13-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          177181.97509463856,
+          60377.15864976056
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G13-2",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          177725.03616540495,
+          58250.169455925585
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G13-3",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          180643.98942077422,
+          56236.31798516693
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G14-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          195193.50060839008,
+          56043.98385593714
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G15",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          210444.4656790792,
+          56134.4940343982
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G16-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          225378.64512515458,
+          56179.749123628746
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G17-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          239983.3109527703,
+          56046.45874362937
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G18-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          255235.69024499785,
+          55707.0455744004
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          270169.8696910733,
+          55452.48569747866
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          285570.74224483856,
+          55113.07252824967
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-2",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          289983.1134448154,
+          56810.1383743946
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-3",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          288254.2276140552,
+          55388.84572824823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-4",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          290094.4833909687,
+          59594.387028226134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-5",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          290577.08649096615,
+          61848.30260513736
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-6",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          292040.80578326614,
+          62442.27565128809
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G19-7",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          294119.71144479373,
+          62431.66898974968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G21-1",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          300589.7749832213,
+          62410.45566667287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G21-2",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          300589.7749832213,
+          63577.18843589751
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G21-3",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          294289.4180294082,
+          63534.76178974389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G20-7",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          291977.16581403575,
+          63513.548466667075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G20-8",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          289495.2070140488,
+          63258.988589745335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "G20-9",
+        "type": "node"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          287967.84775251837,
+          61667.989358984465
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "E-0",
+        "type": "edge"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            165478.14280893173,
+            60974.57886091094
+          ],
+          [
+            171599.5123492842,
+            60986.51135514164
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "E-2",
+        "type": "edge"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            171599.5123492842,
+            60986.51135514164
+          ],
+          [
+            177183.91964925485,
+            60376.46258759679
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "E3",
+        "type": "edge"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            177183.91964925485,
+            60376.46258759679
+          ],
+          [
+            177743.25531631924,
+            58216.681131838865
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "E4",
+        "type": "edge"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            177743.25531631924,
+            58216.681131838865
+          ],
+          [
+            180678.64889707306,
+            56283.6170664644
+          ]
+        ]
+      }
+    }
+  ]
+}

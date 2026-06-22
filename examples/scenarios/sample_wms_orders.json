@@ -1,0 +1,36 @@
+{
+  "orders": [
+    {
+      "id": "A-001",
+      "release_time": 1.0,
+      "cargo_type": "A",
+      "pickup_node": "P1",
+      "dropoff_node": "D1",
+      "eligible_robots": ["R1", "R2"]
+    },
+    {
+      "id": "B-001",
+      "release_time": 3.0,
+      "cargo_type": "B",
+      "pickup_node": "P2",
+      "dropoff_node": "D2",
+      "eligible_robots": ["R2", "R3"]
+    },
+    {
+      "id": "A-002",
+      "release_time": 5.0,
+      "cargo_type": "A",
+      "pickup_node": "P1",
+      "dropoff_node": "D2",
+      "eligible_robots": ["R1", "R3"]
+    },
+    {
+      "id": "A-003",
+      "release_time": 9.0,
+      "cargo_type": "A",
+      "pickup_node": "P2",
+      "dropoff_node": "D1",
+      "eligible_robots": ["R1", "R2", "R3"]
+    }
+  ]
+}
