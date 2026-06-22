@@ -77,7 +77,7 @@ async def lifespan(app: FastAPI):
             await loop_task
         except asyncio.CancelledError:
             pass
-        
+
         await engine.comms.stop()
 
 
@@ -99,6 +99,16 @@ async def get_state():
 async def start_simulation():
     await engine.start()
     return {"ok": True, "status": "running"}
+
+
+@app.get("/api/comms/status")
+async def comms_status():
+    return engine.comms.status
+
+
+@app.get("/api/comms/states")
+async def comms_states():
+    return engine.comms.reported_states
 
 
 @app.post("/api/simulation/pause")

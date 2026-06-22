@@ -45,6 +45,12 @@ class FleetCommLink:
         self.server.send(robot_id, order_message(robot_id, order_id, waypoints))
 
     @property
+    def reported_states(self) -> dict[str, Any]:
+        # latest robot states received
+        return dict(self.server.latest_states)
+
+
+    @property
     def status(self) -> dict[str, Any]:
         return {
             "running": self._started,

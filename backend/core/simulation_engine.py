@@ -355,6 +355,12 @@ class SimulationEngine:
                 "orders_delivered": metrics["orders_delivered"],
                 "fifo_violation_count": metrics["fifo_violation_count"],
             }
+            comms = None
+            if self.use_comms:
+                comms = {
+                    **self.comms.status,
+                    "reported_states": self.comms.reported_states,
+                }
             return WorldSnapshot(
                 time=self.sim_time,
                 width_m=self.world.width_m,
@@ -368,6 +374,7 @@ class SimulationEngine:
                 wms=self.wms.to_dict(),
                 metrics_summary=summary,
                 last_collisions=self.last_collisions,
+                comms=comms,
             ).to_dict()
 
     async def export_metrics(self) -> dict:
