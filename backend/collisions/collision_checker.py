@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from enum import StrEnum
-from math import hypot
+from math import floor, hypot
 
 from backend.maps.dxf_map import DxfMap, Segment2D
 from backend.robots.base import RobotBase
@@ -38,6 +38,11 @@ class CollisionChecker:
 
     def __init__(self, event_cooldown_s: float = 0.5):
         self.event_cooldown_s = event_cooldown_s
+        self.episodes = False
+        self._contacts = set()
+        self._indexed_map = None
+        self._wall_grid = {}
+        self._grid_size = 10.0
         self._next_allowed_time_by_key: dict[tuple[str, str, str | None], float] = {}
 
     def check(self, robots: list[RobotBase], dxf_map: DxfMap | None, sim_time: float) -> list[CollisionEvent]:
@@ -46,6 +51,11 @@ class CollisionChecker:
             raw_events.extend(self._check_robot_wall(robots, dxf_map, sim_time))
         raw_events.extend(self._check_robot_robot(robots, sim_time))
 
+        if self.episodes:
+            current = {event.key() for event in raw_events}
+            events = [event for event in raw_events if event.key() not in self._contacts]
+            self._contacts = current
+            return events
         events: list[CollisionEvent] = []
         for event in raw_events:
             key = event.key()
@@ -56,10 +66,24 @@ class CollisionChecker:
 
     def _check_robot_wall(self, robots: list[RobotBase], dxf_map: DxfMap, sim_time: float) -> list[CollisionEvent]:
         events: list[CollisionEvent] = []
+        # Maps are immutable during a run. Index once, and retain original wall IDs.
+        cell = self._grid_size
+        if self._indexed_map is not dxf_map:
+            self._indexed_map = dxf_map
+            self._wall_grid = {}
+            for idx, segment in enumerate(dxf_map.segments):
+                for x in range(floor(min(segment.start.x, segment.end.x)/cell), floor(max(segment.start.x, segment.end.x)/cell)+1):
+                    for y in range(floor(min(segment.start.y, segment.end.y)/cell), floor(max(segment.start.y, segment.end.y)/cell)+1):
+                        self._wall_grid.setdefault((x,y), []).append(idx)
         for robot in robots:
             s = robot.state
             radius = s.collision_radius
-            for idx, segment in enumerate(dxf_map.segments):
+            candidates = set()
+            for x in range(floor((s.x-radius)/cell), floor((s.x+radius)/cell)+1):
+                for y in range(floor((s.y-radius)/cell), floor((s.y+radius)/cell)+1):
+                    candidates.update(self._wall_grid.get((x,y), []))
+            for idx in sorted(candidates):
+                segment = dxf_map.segments[idx]
                 dist, closest_x, closest_y = _distance_point_to_segment(s.x, s.y, segment)
                 if dist <= radius:
                     events.append(

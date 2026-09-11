@@ -1,0 +1,2028 @@
+{
+  "type": "FeatureCollection",
+  "coordinate_system": {
+    "type": "local_cartesian",
+    "units": "metre",
+    "origin": "DXF (0,0)",
+    "x_axis": "right",
+    "y_axis": "up",
+    "geographic": false
+  },
+  "source_dxf": "automotive_factory_L_v2.dxf",
+  "routes": [
+    {
+      "route_id": "R01",
+      "name": "Assembly short",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 180.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J01",
+        "J04"
+      ],
+      "color": "#dc3545",
+      "node_ids": [
+        "N1",
+        "J01",
+        "N6",
+        "J04",
+        "N1"
+      ]
+    },
+    {
+      "route_id": "R02",
+      "name": "Assembly outer loop",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 780.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J01",
+        "J02",
+        "J03",
+        "J04",
+        "J06",
+        "J11",
+        "J12"
+      ],
+      "color": "#df7b13",
+      "node_ids": [
+        "N1",
+        "J01",
+        "J02",
+        "J03",
+        "J12",
+        "J11",
+        "N4",
+        "J06",
+        "J04",
+        "N1"
+      ]
+    },
+    {
+      "route_id": "R03",
+      "name": "Assembly conveyor perimeter",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 600.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J02",
+        "J03",
+        "J07",
+        "J11",
+        "J12"
+      ],
+      "color": "#a68900",
+      "node_ids": [
+        "J02",
+        "J03",
+        "J12",
+        "J11",
+        "J07",
+        "J02"
+      ]
+    },
+    {
+      "route_id": "R04",
+      "name": "Assembly preparation",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 360.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J01",
+        "J02",
+        "J04",
+        "J06",
+        "J07"
+      ],
+      "color": "#368445",
+      "node_ids": [
+        "N1",
+        "J01",
+        "J02",
+        "J07",
+        "J06",
+        "J04",
+        "N1"
+      ]
+    },
+    {
+      "route_id": "R05",
+      "name": "Logistics express",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 150.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J05",
+        "J08"
+      ],
+      "color": "#00a59b",
+      "node_ids": [
+        "N14",
+        "J05",
+        "J08",
+        "N15",
+        "N14"
+      ]
+    },
+    {
+      "route_id": "R06",
+      "name": "Logistics receiving",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 330.0,
+      "min_obstacle_clearance_m": 6.5,
+      "junction_ids": [
+        "J05",
+        "J08",
+        "J09",
+        "J10"
+      ],
+      "color": "#0087cd",
+      "node_ids": [
+        "J05",
+        "N28",
+        "J09",
+        "N30",
+        "J10",
+        "J08",
+        "J05"
+      ]
+    },
+    {
+      "route_id": "R07",
+      "name": "Logistics picking",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 270.0,
+      "min_obstacle_clearance_m": 6.5,
+      "junction_ids": [
+        "J05",
+        "J08",
+        "J09"
+      ],
+      "color": "#4552bb",
+      "node_ids": [
+        "N14",
+        "J05",
+        "N28",
+        "J09",
+        "J08",
+        "N15",
+        "N14"
+      ]
+    },
+    {
+      "route_id": "R08",
+      "name": "Paint lower loop",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 240.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J13",
+        "J14",
+        "J15"
+      ],
+      "color": "#9541bf",
+      "node_ids": [
+        "N16",
+        "J13",
+        "J15",
+        "J14",
+        "N16"
+      ]
+    },
+    {
+      "route_id": "R09",
+      "name": "Paint upper loop",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 240.0,
+      "min_obstacle_clearance_m": 7.1,
+      "junction_ids": [
+        "J14",
+        "J15"
+      ],
+      "color": "#cd4e91",
+      "node_ids": [
+        "J14",
+        "J15",
+        "N27",
+        "N18",
+        "J14"
+      ]
+    },
+    {
+      "route_id": "R10",
+      "name": "Intershop supply",
+      "closed": true,
+      "direction": "coordinate_order",
+      "length_m": 870.0,
+      "min_obstacle_clearance_m": 4.5,
+      "junction_ids": [
+        "J03",
+        "J05",
+        "J08",
+        "J10",
+        "J12",
+        "J13",
+        "J14",
+        "J15"
+      ],
+      "color": "#293746",
+      "node_ids": [
+        "J03",
+        "N19",
+        "J05",
+        "J08",
+        "J10",
+        "N23",
+        "N24",
+        "J13",
+        "J15",
+        "J14",
+        "N13",
+        "N12",
+        "J12",
+        "J03"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          27.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N1"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          72.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J04",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J04"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          117.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J06",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R02",
+          "R04"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J06"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          27.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N4"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.5,
+          27.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J01",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J01"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.5,
+          72.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N6"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.5,
+          27.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J02",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R02",
+          "R03",
+          "R04"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J02"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.5,
+          117.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J07",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R03",
+          "R04"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J07"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          117.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J11",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R02",
+          "R03"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J11"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          222.5,
+          27.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J03",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R02",
+          "R03",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J03"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          222.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J12",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R02",
+          "R03",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J12"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          237.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N12"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          237.5,
+          327.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N13"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          297.5,
+          87.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          297.5,
+          132.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          297.5,
+          267.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N16"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          297.5,
+          327.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J14",
+        "kind": "cross",
+        "degree": 4,
+        "route_ids": [
+          "R08",
+          "R09",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J14"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          297.5,
+          387.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N18"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          327.5,
+          27.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N19"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          327.5,
+          87.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J05",
+        "kind": "cross",
+        "degree": 4,
+        "route_ids": [
+          "R05",
+          "R06",
+          "R07",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J05"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          327.5,
+          132.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J08",
+        "kind": "cross",
+        "degree": 4,
+        "route_ids": [
+          "R05",
+          "R06",
+          "R07",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J08"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          327.5,
+          192.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J10",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R06",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J10"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          327.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N23"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          357.5,
+          222.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N24"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          357.5,
+          267.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J13",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R08",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J13"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          357.5,
+          327.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J15",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R08",
+          "R09",
+          "R10"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J15"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          357.5,
+          387.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N27"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          387.5,
+          87.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N28"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          387.5,
+          132.5
+        ]
+      },
+      "properties": {
+        "junction_id": "J09",
+        "kind": "merge_diverge",
+        "degree": 3,
+        "route_ids": [
+          "R06",
+          "R07"
+        ],
+        "control_radius_m": 3.0,
+        "type": "node",
+        "id": "J09"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          387.5,
+          192.5
+        ]
+      },
+      "properties": {
+        "type": "node",
+        "id": "N30"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.5,
+            27.5
+          ],
+          [
+            72.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E1",
+        "startid": "N1",
+        "endid": "J01",
+        "direction": "forward",
+        "route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.5,
+            27.5
+          ],
+          [
+            72.5,
+            72.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E2",
+        "startid": "J01",
+        "endid": "N6",
+        "direction": "forward",
+        "route_ids": [
+          "R01"
+        ],
+        "forward_route_ids": [
+          "R01"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.5,
+            72.5
+          ],
+          [
+            27.5,
+            72.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E3",
+        "startid": "N6",
+        "endid": "J04",
+        "direction": "forward",
+        "route_ids": [
+          "R01"
+        ],
+        "forward_route_ids": [
+          "R01"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.5,
+            72.5
+          ],
+          [
+            27.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E4",
+        "startid": "J04",
+        "endid": "N1",
+        "direction": "forward",
+        "route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R01",
+          "R02",
+          "R04"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.5,
+            27.5
+          ],
+          [
+            117.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E5",
+        "startid": "J01",
+        "endid": "J02",
+        "direction": "forward",
+        "route_ids": [
+          "R02",
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R02",
+          "R04"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            117.5,
+            27.5
+          ],
+          [
+            222.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E6",
+        "startid": "J02",
+        "endid": "J03",
+        "direction": "forward",
+        "route_ids": [
+          "R02",
+          "R03"
+        ],
+        "forward_route_ids": [
+          "R02",
+          "R03"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            222.5,
+            27.5
+          ],
+          [
+            222.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E7",
+        "startid": "J03",
+        "endid": "J12",
+        "direction": "bidirectional",
+        "route_ids": [
+          "R02",
+          "R03",
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R02",
+          "R03"
+        ],
+        "reverse_route_ids": [
+          "R10"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            222.5,
+            222.5
+          ],
+          [
+            117.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E8",
+        "startid": "J12",
+        "endid": "J11",
+        "direction": "forward",
+        "route_ids": [
+          "R02",
+          "R03"
+        ],
+        "forward_route_ids": [
+          "R02",
+          "R03"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            117.5,
+            222.5
+          ],
+          [
+            27.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E9",
+        "startid": "J11",
+        "endid": "N4",
+        "direction": "forward",
+        "route_ids": [
+          "R02"
+        ],
+        "forward_route_ids": [
+          "R02"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.5,
+            222.5
+          ],
+          [
+            27.5,
+            117.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E10",
+        "startid": "N4",
+        "endid": "J06",
+        "direction": "forward",
+        "route_ids": [
+          "R02"
+        ],
+        "forward_route_ids": [
+          "R02"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            27.5,
+            117.5
+          ],
+          [
+            27.5,
+            72.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E11",
+        "startid": "J06",
+        "endid": "J04",
+        "direction": "forward",
+        "route_ids": [
+          "R02",
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R02",
+          "R04"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            117.5,
+            222.5
+          ],
+          [
+            117.5,
+            117.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E12",
+        "startid": "J11",
+        "endid": "J07",
+        "direction": "forward",
+        "route_ids": [
+          "R03"
+        ],
+        "forward_route_ids": [
+          "R03"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            117.5,
+            117.5
+          ],
+          [
+            117.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E13",
+        "startid": "J07",
+        "endid": "J02",
+        "direction": "bidirectional",
+        "route_ids": [
+          "R03",
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R03"
+        ],
+        "reverse_route_ids": [
+          "R04"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            117.5,
+            117.5
+          ],
+          [
+            27.5,
+            117.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E14",
+        "startid": "J07",
+        "endid": "J06",
+        "direction": "forward",
+        "route_ids": [
+          "R04"
+        ],
+        "forward_route_ids": [
+          "R04"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            87.5
+          ],
+          [
+            327.5,
+            87.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E15",
+        "startid": "N14",
+        "endid": "J05",
+        "direction": "forward",
+        "route_ids": [
+          "R05",
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R05",
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            87.5
+          ],
+          [
+            327.5,
+            132.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E16",
+        "startid": "J05",
+        "endid": "J08",
+        "direction": "bidirectional",
+        "route_ids": [
+          "R05",
+          "R06",
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R05",
+          "R10"
+        ],
+        "reverse_route_ids": [
+          "R06"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            132.5
+          ],
+          [
+            297.5,
+            132.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E17",
+        "startid": "J08",
+        "endid": "N15",
+        "direction": "forward",
+        "route_ids": [
+          "R05",
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R05",
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            132.5
+          ],
+          [
+            297.5,
+            87.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E18",
+        "startid": "N15",
+        "endid": "N14",
+        "direction": "forward",
+        "route_ids": [
+          "R05",
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R05",
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            87.5
+          ],
+          [
+            387.5,
+            87.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E19",
+        "startid": "J05",
+        "endid": "N28",
+        "direction": "forward",
+        "route_ids": [
+          "R06",
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R06",
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            387.5,
+            87.5
+          ],
+          [
+            387.5,
+            132.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E20",
+        "startid": "N28",
+        "endid": "J09",
+        "direction": "forward",
+        "route_ids": [
+          "R06",
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R06",
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            387.5,
+            132.5
+          ],
+          [
+            387.5,
+            192.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E21",
+        "startid": "J09",
+        "endid": "N30",
+        "direction": "forward",
+        "route_ids": [
+          "R06"
+        ],
+        "forward_route_ids": [
+          "R06"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            387.5,
+            192.5
+          ],
+          [
+            327.5,
+            192.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E22",
+        "startid": "N30",
+        "endid": "J10",
+        "direction": "forward",
+        "route_ids": [
+          "R06"
+        ],
+        "forward_route_ids": [
+          "R06"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            192.5
+          ],
+          [
+            327.5,
+            132.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E23",
+        "startid": "J10",
+        "endid": "J08",
+        "direction": "bidirectional",
+        "route_ids": [
+          "R06",
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R06"
+        ],
+        "reverse_route_ids": [
+          "R10"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            387.5,
+            132.5
+          ],
+          [
+            327.5,
+            132.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E24",
+        "startid": "J09",
+        "endid": "J08",
+        "direction": "forward",
+        "route_ids": [
+          "R07"
+        ],
+        "forward_route_ids": [
+          "R07"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            267.5
+          ],
+          [
+            357.5,
+            267.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E25",
+        "startid": "N16",
+        "endid": "J13",
+        "direction": "forward",
+        "route_ids": [
+          "R08"
+        ],
+        "forward_route_ids": [
+          "R08"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            357.5,
+            267.5
+          ],
+          [
+            357.5,
+            327.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E26",
+        "startid": "J13",
+        "endid": "J15",
+        "direction": "forward",
+        "route_ids": [
+          "R08",
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R08",
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            357.5,
+            327.5
+          ],
+          [
+            297.5,
+            327.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E27",
+        "startid": "J15",
+        "endid": "J14",
+        "direction": "bidirectional",
+        "route_ids": [
+          "R08",
+          "R09",
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R08",
+          "R10"
+        ],
+        "reverse_route_ids": [
+          "R09"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            327.5
+          ],
+          [
+            297.5,
+            267.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E28",
+        "startid": "J14",
+        "endid": "N16",
+        "direction": "forward",
+        "route_ids": [
+          "R08"
+        ],
+        "forward_route_ids": [
+          "R08"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            357.5,
+            327.5
+          ],
+          [
+            357.5,
+            387.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E29",
+        "startid": "J15",
+        "endid": "N27",
+        "direction": "forward",
+        "route_ids": [
+          "R09"
+        ],
+        "forward_route_ids": [
+          "R09"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            357.5,
+            387.5
+          ],
+          [
+            297.5,
+            387.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E30",
+        "startid": "N27",
+        "endid": "N18",
+        "direction": "forward",
+        "route_ids": [
+          "R09"
+        ],
+        "forward_route_ids": [
+          "R09"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            387.5
+          ],
+          [
+            297.5,
+            327.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E31",
+        "startid": "N18",
+        "endid": "J14",
+        "direction": "forward",
+        "route_ids": [
+          "R09"
+        ],
+        "forward_route_ids": [
+          "R09"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            222.5,
+            27.5
+          ],
+          [
+            327.5,
+            27.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E32",
+        "startid": "J03",
+        "endid": "N19",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            27.5
+          ],
+          [
+            327.5,
+            87.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E33",
+        "startid": "N19",
+        "endid": "J05",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            192.5
+          ],
+          [
+            327.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E34",
+        "startid": "J10",
+        "endid": "N23",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            327.5,
+            222.5
+          ],
+          [
+            357.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E35",
+        "startid": "N23",
+        "endid": "N24",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            357.5,
+            222.5
+          ],
+          [
+            357.5,
+            267.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E36",
+        "startid": "N24",
+        "endid": "J13",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            297.5,
+            327.5
+          ],
+          [
+            237.5,
+            327.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E37",
+        "startid": "J14",
+        "endid": "N13",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            237.5,
+            327.5
+          ],
+          [
+            237.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E38",
+        "startid": "N13",
+        "endid": "N12",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            237.5,
+            222.5
+          ],
+          [
+            222.5,
+            222.5
+          ]
+        ]
+      },
+      "properties": {
+        "type": "edge",
+        "id": "E39",
+        "startid": "N12",
+        "endid": "J12",
+        "direction": "forward",
+        "route_ids": [
+          "R10"
+        ],
+        "forward_route_ids": [
+          "R10"
+        ],
+        "reverse_route_ids": []
+      }
+    }
+  ]
+}

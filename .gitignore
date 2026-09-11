@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local scenario library, imported assets, reports and simulation artifacts
+/workspace/
+/.runtime/

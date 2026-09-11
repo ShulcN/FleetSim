@@ -50,11 +50,17 @@ class NodeRouteRequest(BaseModel):
     node_ids: list[str]
 
 
+def _require_preparation() -> None:
+    if engine.recording.started and engine.status not in {"finished", "collision_stopped"}:
+        raise HTTPException(409, "Вернитесь к подготовке перед сменой сценария.")
+
+
 async def _load_default_demo() -> None:
+    _require_preparation()
     await engine.configure_from_files(
         fleet_robots=load_fleet_from_file(EXAMPLES_DIR / "fleets" / "sample_fleet.json"),
-        map_dxf_path=EXAMPLES_DIR / "maps" / "sample_factory.dxf",
-        graph_geojson_path=EXAMPLES_DIR / "graphs" / "sample_routes.geojson",
+        map_dxf_path=EXAMPLES_DIR / "maps" / "factory.dxf",
+        graph_geojson_path=EXAMPLES_DIR / "graphs" / "factory_routes.geojson",
         scenario_json_path=EXAMPLES_DIR / "scenarios" / "sample_wms_orders.json",
         max_sim_time=120.0,
         collision_mode=CollisionMode.COUNT_ONLY,
@@ -83,6 +89,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Fleet Sim MVP", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+from backend.workspace.api import router_for
+app.include_router(router_for(engine, ROOT_DIR))
 
 
 @app.get("/")
@@ -135,6 +143,25 @@ async def load_demo():
     return {"ok": True, "message": "Default demo files loaded"}
 
 
+@app.post("/api/simulation/load-agv-demo")
+async def load_agv_demo():
+    _require_preparation()
+    await engine.configure_from_files(
+        fleet_robots=load_fleet_from_file(EXAMPLES_DIR / "fleets" / "factory_agv_15.json"),
+        map_dxf_path=EXAMPLES_DIR / "maps" / "factory.dxf",
+        graph_geojson_path=EXAMPLES_DIR / "graphs" / "factory_routes.geojson",
+        scenario_json_path=EXAMPLES_DIR / "scenarios" / "factory_agv_15.json",
+        max_sim_time=600.0,
+        collision_mode=CollisionMode.STOP_ON_COLLISION,
+    )
+    return {"ok": True, "state": await engine.snapshot()}
+
+
+@app.exception_handler(ValueError)
+async def invalid_configuration(request, exc):
+    return JSONResponse(status_code=400, content={"detail": str(exc)})
+
+
 @app.post("/api/simulation/configure")
 async def configure_simulation(
     map_dxf: UploadFile | None = File(default=None),
@@ -145,6 +172,7 @@ async def configure_simulation(
     collision_mode: str = Form(default="count_only"),
     autostart: bool = Form(default=True),
 ):
+    _require_preparation()
     try:
         mode = CollisionMode(collision_mode)
     except ValueError as exc:

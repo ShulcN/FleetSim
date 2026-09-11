@@ -40,6 +40,7 @@ class Order:
 class WmsScenario:
     orders: list[Order] = field(default_factory=list)
     _next_index: int = 0
+    fixed_loops: dict | None = None
 
     @classmethod
     def from_file(cls, path: str | Path) -> "WmsScenario":
@@ -61,7 +62,7 @@ class WmsScenario:
                 )
             )
         orders.sort(key=lambda o: (o.release_time, o.id))
-        return cls(orders=orders)
+        return cls(orders=orders, fixed_loops=data.get("fixed_loops"))
 
     def release_due_orders(self, sim_time: float) -> list[Order]:
         released: list[Order] = []
@@ -82,4 +83,4 @@ class WmsScenario:
         return next((o for o in self.orders if o.id == order_id), None)
 
     def to_dict(self) -> dict:
-        return {"orders": [o.to_dict() for o in self.orders]}
+        return {"orders": [o.to_dict() for o in self.orders], "fixed_loops": self.fixed_loops}

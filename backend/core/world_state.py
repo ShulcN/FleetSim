@@ -22,6 +22,7 @@ class WorldSnapshot:
     metrics_summary: dict | None = None
     last_collisions: list[dict] = field(default_factory=list)
     comms: dict | None = None
+    mapf: dict | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -40,4 +41,5 @@ class WorldSnapshot:
             "metrics_summary": self.metrics_summary,
             "last_collisions": self.last_collisions,
             "comms": self.comms,
+            "mapf": self.mapf,
         }

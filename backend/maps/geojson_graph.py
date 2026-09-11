@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import heapq
 import json
+from math import isfinite
 from dataclasses import asdict, dataclass, field
 from math import hypot
 from pathlib import Path
@@ -56,10 +57,12 @@ class GeoJsonRouteGraph:
     nodes: dict[str, GraphNode] = field(default_factory=dict)
     edges: dict[str, GraphEdge] = field(default_factory=dict)
     source: str | None = None
+    routes: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
             "source": self.source,
+            "routes": self.routes,
             "nodes": [n.to_dict() for n in self.nodes.values()],
             "edges": [e.to_dict() for e in self.edges.values()],
         }
@@ -125,8 +128,8 @@ class GeoJsonRouteGraph:
 
 def load_geojson_graph(path: str | Path) -> GeoJsonRouteGraph:
     path = Path(path)
-    data = json.loads(path.read_text(encoding="utf-8"))
-    graph = GeoJsonRouteGraph(source=str(path))
+    data = json.loads(path.read_text(encoding="utf-8"), parse_constant=lambda _: None)
+    graph = GeoJsonRouteGraph(source=str(path), routes=data.get("routes", []))
 
     for index, feature in enumerate(data.get("features", [])):
         geometry = feature.get("geometry") or {}
@@ -144,6 +147,7 @@ def load_geojson_graph(path: str | Path) -> GeoJsonRouteGraph:
                 properties=props,
             )
 
+    by_coordinate = {(n.x, n.y): n.id for n in graph.nodes.values()}
     for index, feature in enumerate(data.get("features", [])):
         geometry = feature.get("geometry") or {}
         props = feature.get("properties") or {}
@@ -156,8 +160,8 @@ def load_geojson_graph(path: str | Path) -> GeoJsonRouteGraph:
             continue
 
         edge_id = str(props.get("id") or props.get("edge_id") or f"E{index}")
-        start = str(props.get("startid") or props.get("start") or props.get("from") or "")
-        end = str(props.get("endid") or props.get("end") or props.get("to") or "")
+        start = str(props.get("startid") or props.get("start") or props.get("from") or props.get("source") or "")
+        end = str(props.get("endid") or props.get("end") or props.get("to") or props.get("target") or "")
         direction = str(props.get("direction", "bidirectional")).lower()
         bidirectional = direction not in {"oneway", "one_way", "forward"}
 
@@ -170,17 +174,19 @@ def load_geojson_graph(path: str | Path) -> GeoJsonRouteGraph:
 
         if not start or not end:
             if coordinates and graph.nodes:
-                start = graph.nearest_node(*coordinates[0]) or ""
-                end = graph.nearest_node(*coordinates[-1]) or ""
+                start = by_coordinate.get(coordinates[0]) or graph.nearest_node(*coordinates[0]) or ""
+                end = by_coordinate.get(coordinates[-1]) or graph.nearest_node(*coordinates[-1]) or ""
 
         if start and end:
+            if start not in graph.nodes or end not in graph.nodes:
+                raise ValueError("Graph edge references unknown node; use a combined nodes+edges GeoJSON")
             graph.edges[edge_id] = GraphEdge(
                 id=edge_id,
                 start=start,
                 end=end,
                 coordinates=coordinates,
                 bidirectional=bidirectional,
-                cost=float(props["cost"]) if "cost" in props else None,
+                cost=float(props["cost"]) if props.get("cost") is not None else None,
                 properties=props,
             )
 

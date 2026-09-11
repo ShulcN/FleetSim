@@ -1,0 +1,15 @@
+{
+  "method": "random",
+  "seed": 42,
+  "budget": 12,
+  "duration_s": 600,
+  "baseline_parameters": {"W": 16, "T_replan": 4, "C_wait": 1, "k_wait": 1, "k_goal": 0.1, "time_limit_s": 0.5},
+  "fixed_parameters": {"time_limit_s": 0.5, "max_expansions": 100000},
+  "space": {"W": [8, 16, 32], "T_replan": [2, 4, 8], "C_wait": [0.5, 1, 3], "k_wait": [0.5, 1, 3], "k_goal": [0.05, 0.1, 0.5]},
+  "objective": {
+    "weights": {"mean_delivery_s": 1, "distance_m": 1, "conflict_episodes": 1, "delivery_imbalance": 1, "energy": 1},
+    "scales": {"mean_delivery_s": 600, "distance_m": 1000, "conflict_episodes": 10, "delivery_imbalance": 1, "energy": 1000},
+    "collision_penalty": 1000,
+    "incomplete_weight": 10
+  }
+}
