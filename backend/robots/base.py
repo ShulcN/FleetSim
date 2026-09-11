@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
-from math import hypot, pi
+from math import cos, hypot, pi, sin
 from typing import Any
 
 from .commands import ControlCommand
@@ -123,7 +123,7 @@ class RobotBase:
         self.state.mode = "collision"
         self.state.status = "collision"
 
-    def update(self, dt: float) -> None:
+    def update(self, dt: float, neighbors: list[RobotState] | None = None, safety_gap: float = 1.0) -> None:
         if self.route_follower is not None and self.route_follower.active:
             command = self.route_follower.compute_command(self.state)
             self.state.mode = "route"
@@ -132,6 +132,26 @@ class RobotBase:
             if self.state.mode == "route":
                 self.state.mode = "manual"
 
+        if neighbors is not None and command.linear > 0:
+            # Local AGV distance keeping. Frozen peer states make the result
+            # independent of update order; split available closing distance in two.
+            limit = command.linear
+            for other in neighbors:
+                if other.id == self.state.id:
+                    continue
+                dx, dy = other.x-self.state.x, other.y-self.state.y
+                # Only a leader in the same lane/direction is locally observable.
+                # Crossing traffic remains the central planner's responsibility.
+                if cos(other.theta-self.state.theta) < 0.8:
+                    continue
+                lateral = abs(-dx*sin(self.state.theta)+dy*cos(self.state.theta))
+                if lateral > (self.state.width+other.width)/2:
+                    continue
+                if dx*cos(self.state.theta)+dy*sin(self.state.theta) <= 0:
+                    continue
+                gap = hypot(dx,dy) - self.state.collision_radius - other.collision_radius - safety_gap
+                limit = min(limit, max(0.0, gap / (2*dt)))
+            command = ControlCommand(linear=limit, angular=command.angular)
         self.state = self.kinematics.step(self.state, command, dt)
 
     def snapshot(self) -> dict:

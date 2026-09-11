@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Iterable
 
 from backend.collisions import CollisionChecker, CollisionMode
 from backend.maps.dxf_map import DxfMap, load_dxf_map
+from backend.mapf.traffic import LoopTraffic
 from backend.maps.geojson_graph import GeoJsonRouteGraph, load_geojson_graph
 from backend.metrics import MetricsCollector
 from backend.robots.base import RobotBase
@@ -16,6 +17,7 @@ from backend.wms.fifo_validator import FifoValidator
 from backend.wms.orders import Order, OrderStatus, WmsScenario
 from backend.comms import FleetCommLink
 from .world_state import WorldConfig, WorldSnapshot
+from backend.workspace.recording import RunRecording
 
 
 @dataclass
@@ -29,14 +31,22 @@ class SimulationSettings:
 class SimulationEngine:
     """Simulation core."""
 
-    def __init__(self, world: WorldConfig | None = None, settings: SimulationSettings | None = None):
+    def __init__(
+        self,
+        world: WorldConfig | None = None,
+        settings: SimulationSettings | None = None,
+    ):
         self.world = world or WorldConfig()
         self.settings = settings or SimulationSettings()
         self.robots: dict[str, RobotBase] = {}
         self.sim_time = 0.0
-        self.status = "stopped"  # stopped | running | paused | finished | collision_stopped
+        self.status = (
+            "stopped"  # stopped | running | paused | finished | collision_stopped
+        )
         self.dxf_map: DxfMap | None = None
         self.graph: GeoJsonRouteGraph | None = None
+        self.traffic: LoopTraffic | None = None
+        self.collision_map: DxfMap | None = None
         self.wms = WmsScenario()
         self.metrics = MetricsCollector()
         self.fifo = FifoValidator()
@@ -44,9 +54,11 @@ class SimulationEngine:
         self.last_collisions: list[dict] = []
         self.map_id = "factory_map"
 
+        self.recording = RunRecording()
+        self.actual_realtime_factor = 0.0
         self.use_comms = True
         self.comms = FleetCommLink()
-        
+
         self._lock = asyncio.Lock()
 
     async def reset(
@@ -56,27 +68,62 @@ class SimulationEngine:
         graph: GeoJsonRouteGraph | None = None,
         wms: WmsScenario | None = None,
         settings: SimulationSettings | None = None,
+        recording_inputs: dict | None = None,
+        amr_graph: GeoJsonRouteGraph | None = None,
     ) -> None:
         async with self._lock:
+            prepared_robots = {robot.state.id: robot for robot in (robots or [])}
+            prepared_wms = wms or WmsScenario()
+            if prepared_wms.fixed_loops and graph is None:
+                raise ValueError("Fixed-loop mode requires a route graph")
+            if (
+                prepared_wms.fixed_loops
+                and prepared_wms.fixed_loops.get("mode") == "mixed"
+            ):
+                from backend.research.traffic import MixedTraffic
+
+                prepared_traffic = MixedTraffic(
+                    graph, amr_graph, prepared_robots, prepared_wms.fixed_loops, dxf_map
+                )
+            else:
+                prepared_traffic = (
+                    LoopTraffic(graph, prepared_robots, prepared_wms.fixed_loops)
+                    if prepared_wms.fixed_loops
+                    else None
+                )
             if settings is not None:
                 self.settings = settings
-            self.robots = {robot.state.id: robot for robot in (robots or [])}
+            self.robots = prepared_robots
             self.dxf_map = dxf_map
             self.graph = graph
-            self.wms = wms or WmsScenario()
+            self.wms = prepared_wms
+            self.traffic = prepared_traffic
+            self.collision_map = dxf_map
+            if self.traffic and dxf_map:
+                layers = self.wms.fixed_loops.get("collision_layers")
+                if layers is not None:
+                    self.collision_map = DxfMap(
+                        segments=[s for s in dxf_map.segments if s.layer in layers]
+                    )
             self.metrics = MetricsCollector()
             self.fifo = FifoValidator()
             self.collision_checker = CollisionChecker()
+            self.collision_checker.episodes = bool(
+                getattr(self.traffic, "temporal", False)
+            )
             self.last_collisions = []
+            self.recording = RunRecording(recording_inputs)
+            self.actual_realtime_factor = 0.0
             self.sim_time = 0.0
             self.status = "stopped"
             await self._restart_comms()
             self._update_world_size_from_map_or_graph()
-            
+            self.metrics.observe_robots([r.snapshot() for r in self.robots.values()])
+            self.recording.capture(self, force=True)
 
     def _apply_order_from_comms(self, robot_id: str | None, waypoints: list) -> None:
         robot = self.robots.get(robot_id) if robot_id else None
-        if robot is not None:
+        if robot is not None and self.traffic is None:
             robot.set_route(waypoints)
 
     def _send_route(self, robot: RobotBase, order_id: str, waypoints: list) -> None:
@@ -84,7 +131,6 @@ class SimulationEngine:
             self.comms.send_order(robot.state.id, order_id, waypoints)
         else:
             robot.set_route(waypoints)
-
 
     async def configure_from_files(
         self,
@@ -97,7 +143,11 @@ class SimulationEngine:
     ) -> None:
         dxf_map = load_dxf_map(map_dxf_path) if map_dxf_path else None
         graph = load_geojson_graph(graph_geojson_path) if graph_geojson_path else None
-        wms = WmsScenario.from_file(scenario_json_path) if scenario_json_path else WmsScenario()
+        wms = (
+            WmsScenario.from_file(scenario_json_path)
+            if scenario_json_path
+            else WmsScenario()
+        )
         await self.reset(
             robots=fleet_robots,
             dxf_map=dxf_map,
@@ -116,13 +166,20 @@ class SimulationEngine:
         if self.use_comms and self.robots:
             await self.comms.start(self.robots.values(), self._apply_order_from_comms)
 
-
     async def add_robot(self, robot: RobotBase) -> None:
         async with self._lock:
+            if self.traffic is not None:
+                raise ValueError(
+                    "Fixed-loop mode is centrally controlled; reload the scenario to change routes or fleet"
+                )
             self.robots[robot.state.id] = robot
 
     async def add_robots(self, robots: Iterable[RobotBase]) -> None:
         async with self._lock:
+            if self.traffic is not None:
+                raise ValueError(
+                    "Fixed-loop mode is centrally controlled; reload the scenario to change routes or fleet"
+                )
             for robot in robots:
                 self.robots[robot.state.id] = robot
 
@@ -130,25 +187,45 @@ class SimulationEngine:
         async with self._lock:
             if self.status in {"stopped", "paused"}:
                 self.status = "running"
+                self.recording.started = True
+                self.recording.controls.append(
+                    dict(time=self.sim_time, event="resume_or_start")
+                )
 
     async def pause(self) -> None:
         async with self._lock:
             if self.status == "running":
                 self.status = "paused"
+                self.recording.controls.append(dict(time=self.sim_time, event="pause"))
 
     async def resume(self) -> None:
         async with self._lock:
             if self.status == "paused":
                 self.status = "running"
+                self.recording.started = True
+                self.recording.controls.append(
+                    dict(time=self.sim_time, event="resume_or_start")
+                )
 
     async def stop(self) -> None:
         async with self._lock:
+            if self.recording.started:
+                self.recording.controls.append(dict(time=self.sim_time, event="stop"))
             self.status = "stopped"
-            for robot in self.robots.values():
-                robot.stop()
+            if self.traffic is None:
+                for robot in self.robots.values():
+                    robot.stop()
+            else:
+                # Preserve in-flight grants and follower targets for safe restart.
+                for robot in self.robots.values():
+                    robot.state.v = robot.state.omega = 0.0
 
     async def set_robot_command(self, robot_id: str, command: ControlCommand) -> bool:
         async with self._lock:
+            if self.traffic is not None:
+                raise ValueError(
+                    "Fixed-loop mode is centrally controlled; reload the scenario to change routes or fleet"
+                )
             robot = self.robots.get(robot_id)
             if robot is None:
                 return False
@@ -157,14 +234,24 @@ class SimulationEngine:
 
     async def set_robot_route(self, robot_id: str, waypoints: list[Waypoint]) -> bool:
         async with self._lock:
+            if self.traffic is not None:
+                raise ValueError(
+                    "Fixed-loop mode is centrally controlled; reload the scenario to change routes or fleet"
+                )
             robot = self.robots.get(robot_id)
             if robot is None:
                 return False
             robot.set_route(waypoints)
             return True
 
-    async def set_robot_route_by_nodes(self, robot_id: str, node_ids: list[str]) -> bool:
+    async def set_robot_route_by_nodes(
+        self, robot_id: str, node_ids: list[str]
+    ) -> bool:
         async with self._lock:
+            if self.traffic is not None:
+                raise ValueError(
+                    "Fixed-loop mode is centrally controlled; reload the scenario to change routes or fleet"
+                )
             robot = self.robots.get(robot_id)
             if robot is None or self.graph is None:
                 return False
@@ -178,7 +265,11 @@ class SimulationEngine:
             robot = self.robots.get(robot_id)
             if robot is None:
                 return False
-            robot.stop()
+            if self.traffic is not None:
+                self.traffic.halted.add(robot_id)
+                # Let an already granted move clear its zone, then hold position.
+            else:
+                robot.stop()
             return True
 
     async def step(self) -> None:
@@ -188,23 +279,55 @@ class SimulationEngine:
                 return
             if self.sim_time >= self.settings.max_sim_time:
                 self.status = "finished"
+                self.recording.capture(self, force=True)
                 return
 
-            self._release_due_orders()
-            self._dispatch_pending_orders()
+            if self.traffic is not None:
+                await self.traffic.before_step(self)
+            else:
+                self._release_due_orders()
+                self._dispatch_pending_orders()
 
-            for robot in self.robots.values():
-                robot.update(dt)
-                self._keep_robot_inside_world(robot)
+            neighbors = (
+                [replace(r.state) for r in self.robots.values()]
+                if self.traffic
+                else None
+            )
+            if getattr(self.traffic, "temporal", False):
+                self.traffic.update_robots(self, dt)
+            else:
+                for robot in self.robots.values():
+                    robot.update(
+                        dt,
+                        neighbors=neighbors,
+                        safety_gap=self.traffic.gap if self.traffic else 1.0,
+                    )
+                    self._keep_robot_inside_world(robot)
 
-            self._handle_route_completions()
+            if self.traffic is not None:
+                self.traffic.after_step(self)
+            else:
+                self._handle_route_completions()
 
             collision_events = self.collision_checker.check(
-                list(self.robots.values()), self.dxf_map, self.sim_time
+                list(self.robots.values()), self.collision_map, self.sim_time
             )
             self.last_collisions = [event.to_dict() for event in collision_events]
             if collision_events:
                 self.metrics.record_collisions(collision_events)
+                if self.traffic:
+                    self.traffic.collision_context.extend(
+                        dict(
+                            **event.to_dict(),
+                            control_mode=(
+                                "autonomous"
+                                if self._collision_reason(event)
+                                else "central"
+                            ),
+                            autonomous_reason=self._collision_reason(event),
+                        )
+                        for event in collision_events
+                    )
                 if self.settings.collision_mode == CollisionMode.STOP_ON_COLLISION:
                     self.status = "collision_stopped"
                     for event in collision_events:
@@ -213,11 +336,29 @@ class SimulationEngine:
                             robot.set_collision_status()
                     # For robot-robot collisions, mark the second robot too.
                     for event in collision_events:
-                        if event.type == "robot_robot" and event.other_id in self.robots:
+                        if (
+                            event.type == "robot_robot"
+                            and event.other_id in self.robots
+                        ):
                             self.robots[event.other_id].set_collision_status()
 
-            self.metrics.observe_robots([robot.snapshot() for robot in self.robots.values()])
+            self.metrics.observe_robots(
+                [robot.snapshot() for robot in self.robots.values()]
+            )
             self.sim_time += dt
+            self.recording.capture(self)
+
+    def _collision_reason(self, event):
+        if not getattr(self.traffic, "temporal", False):
+            return self.traffic.autonomous_reason
+        return next(
+            (
+                self.traffic.agents[r].reason
+                for r in (event.robot_id, event.other_id)
+                if r in self.traffic.agents and self.traffic.agents[r].reason
+            ),
+            None,
+        )
 
     def _release_due_orders(self) -> None:
         for order in self.wms.release_due_orders(self.sim_time):
@@ -253,7 +394,9 @@ class SimulationEngine:
             robot.state.status = "to_pickup"
 
             robot.set_route(self.graph.nodes_to_waypoints(node_path))
-            self.metrics.record_order_event(self.sim_time, "assigned", order, robot.state.id)
+            self.metrics.record_order_event(
+                self.sim_time, "assigned", order, robot.state.id
+            )
 
     def _select_robot_for_order(self, order: Order) -> RobotBase | None:
         allowed = set(order.eligible_robots)
@@ -272,7 +415,10 @@ class SimulationEngine:
             return candidates[0]
 
         target = self.graph.nodes[order.pickup_node]
-        return min(candidates, key=lambda r: (r.state.x - target.x) ** 2 + (r.state.y - target.y) ** 2)
+        return min(
+            candidates,
+            key=lambda r: (r.state.x - target.x) ** 2 + (r.state.y - target.y) ** 2,
+        )
 
     def _handle_route_completions(self) -> None:
         if self.graph is None:
@@ -298,13 +444,19 @@ class SimulationEngine:
                 order.picked_at = self.sim_time
                 robot.state.status = "to_dropoff"
                 robot.state.target_node = order.dropoff_node
-                self.metrics.record_order_event(self.sim_time, "picked", order, robot.state.id)
+                self.metrics.record_order_event(
+                    self.sim_time, "picked", order, robot.state.id
+                )
 
                 try:
-                    node_path = self.graph.shortest_path(order.pickup_node, order.dropoff_node)
+                    node_path = self.graph.shortest_path(
+                        order.pickup_node, order.dropoff_node
+                    )
                 except ValueError as exc:
                     order.status = OrderStatus.FAILED
-                    self.metrics.record_order_event(self.sim_time, f"failed: {exc}", order, robot.state.id)
+                    self.metrics.record_order_event(
+                        self.sim_time, f"failed: {exc}", order, robot.state.id
+                    )
                     robot.clear_task()
                     continue
 
@@ -313,7 +465,9 @@ class SimulationEngine:
             elif robot.state.status == "to_dropoff":
                 order.status = OrderStatus.DELIVERED
                 order.delivered_at = self.sim_time
-                self.metrics.record_order_event(self.sim_time, "delivered", order, robot.state.id)
+                self.metrics.record_order_event(
+                    self.sim_time, "delivered", order, robot.state.id
+                )
                 violation = self.fifo.register_delivered(order, self.sim_time)
                 self.metrics.record_fifo_violation(violation)
                 robot.clear_task()
@@ -361,7 +515,7 @@ class SimulationEngine:
                     **self.comms.status,
                     "reported_states": self.comms.reported_states,
                 }
-            return WorldSnapshot(
+            snapshot = WorldSnapshot(
                 time=self.sim_time,
                 width_m=self.world.width_m,
                 height_m=self.world.height_m,
@@ -375,12 +529,20 @@ class SimulationEngine:
                 metrics_summary=summary,
                 last_collisions=self.last_collisions,
                 comms=comms,
+                mapf=self.traffic.snapshot() if self.traffic else None,
             ).to_dict()
+            snapshot["recording"] = self.recording.info()
+            snapshot["speed"] = dict(
+                requested=self.settings.realtime_factor,
+                actual=self.actual_realtime_factor,
+            )
+            return snapshot
 
     async def export_metrics(self) -> dict:
         async with self._lock:
             return {
                 "status": self.status,
+                "mapf": self.traffic.snapshot() if self.traffic else None,
                 "settings": {
                     "dt": self.settings.dt,
                     "realtime_factor": self.settings.realtime_factor,

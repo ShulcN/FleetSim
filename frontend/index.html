@@ -1,80 +1,248 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fleet Sim MVP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fleet Sim · Solver Lab</title>
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <div id="app">
-      <aside id="sidebar">
-        <h1>Fleet Sim MVP</h1>
-
-        <section class="panel">
-          <h2>Simulation</h2>
-          <label>
-            Duration, s
-            <input id="durationInput" type="number" value="120" min="1" step="1" />
-          </label>
-          <label>
-            Collision mode
-            <select id="collisionModeSelect">
-              <option value="count_only">Count only</option>
-              <option value="stop_on_collision">Stop on collision</option>
-            </select>
-          </label>
-          <div class="button-grid">
-            <button id="loadDemoBtn">Load demo</button>
-            <button id="configureStartBtn">Configure & start</button>
-            <button id="startBtn">Start</button>
-            <button id="pauseBtn">Pause</button>
-            <button id="resumeBtn">Resume</button>
-            <button id="stopBtn" class="danger">Stop</button>
-          </div>
-          <a id="exportStatsLink" href="/api/simulation/export-stats" download>Export stats JSON</a>
-        </section>
-
-        <section class="panel">
-          <h2>Input files</h2>
-          <label>DXF map<input id="mapFile" type="file" accept=".dxf" /></label>
-          <label>GeoJSON graph<input id="graphFile" type="file" accept=".geojson,.json" /></label>
-          <label>Fleet JSON<input id="fleetFile" type="file" accept=".json" /></label>
-          <label>WMS scenario JSON<input id="scenarioFile" type="file" accept=".json" /></label>
-          <p class="hint">If a file is not selected, the backend uses the included demo file.</p>
-        </section>
-
-        <section class="panel">
-          <h2>Manual control</h2>
-          <label>
-            Robot ID
-            <input id="robotIdInput" value="R1" />
-          </label>
-          <div class="button-grid">
-            <button data-cmd="forward">W / Forward</button>
-            <button data-cmd="backward">S / Backward</button>
-            <button data-cmd="left">A / Left</button>
-            <button data-cmd="right">D / Right</button>
-            <button data-cmd="stop">Space / Stop</button>
-          </div>
-        </section>
-
-        <section class="panel">
-          <h2>Status</h2>
-          <pre id="statusBox">Connecting...</pre>
-        </section>
-
-        <section class="panel">
-          <h2>Orders</h2>
-          <div id="ordersBox" class="list"></div>
-        </section>
+    <header class="topbar">
+      <a class="brand" href="/"
+        >▦ <strong>Fleet Sim</strong><span>Solver Lab</span></a
+      >
+      <nav>
+        <button id="simulationTab" class="tab active">Симулятор</button
+        ><button id="scenariosTab" class="tab">Сценарии</button>
+      </nav>
+      <div class="header-right">
+        <span id="connection" class="connection">Подключение…</span
+        ><button id="saveReport" class="secondary">↗ Сохранить отчёт</button>
+      </div>
+    </header>
+    <section class="setupbar">
+      <label>Сценарий<select id="scenarioSelect"></select></label
+      ><label>Solver<select id="solverSelect"></select></label
+      ><button id="solverSettings" class="icon-button" title="Параметры solver">
+        ⚙ Параметры</button
+      ><label class="duration"
+        >Длительность, с<input
+          id="duration"
+          type="number"
+          min="1"
+          max="86400"
+          value="600" /></label
+      ><span class="spacer"></span
+      ><span id="runLabel" class="muted">Подготовка эксперимента</span
+      ><button id="newRun" class="secondary" hidden>К подготовке</button>
+    </section>
+    <div id="workspace" class="workspace">
+      <aside id="library" class="library" hidden>
+        <div class="panel-heading">
+          <h2>Сценарии</h2>
+          <button id="newScenario" title="Создать сценарий">＋</button>
+        </div>
+        <p class="muted">Готовая карта, свой эксперимент</p>
+        <div id="scenarioCards"></div>
+        <div class="library-actions">
+          <button id="importScenario" class="secondary">Импорт JSON</button
+          ><input id="scenarioFile" type="file" accept=".json" hidden /><button
+            id="importAsset"
+            class="secondary"
+          >
+            Добавить карту / граф</button
+          ><input
+            id="assetFile"
+            type="file"
+            accept=".dxf,.geojson,.gml"
+            hidden
+          />
+        </div>
       </aside>
-
-      <main id="main">
-        <canvas id="canvas"></canvas>
+      <main id="mapArea" class="map-area">
+        <canvas id="mapCanvas" aria-label="Карта симуляции"></canvas>
+        <div class="map-heading">
+          <div>
+            <span class="eyebrow" id="mapMode">ЖИВАЯ СИМУЛЯЦИЯ</span>
+            <h1 id="mapTitle">Завод</h1>
+            <p id="mapSubtitle">
+              Фиксированные петли · централизованное управление
+            </p>
+          </div>
+        </div>
+        <div class="map-tools">
+          <button id="fitMap" title="Вписать карту">⊡</button
+          ><button id="zoomIn" title="Приблизить">＋</button
+          ><button id="zoomOut" title="Отдалить">−</button>
+          <details>
+            <summary>Слои</summary>
+            <label
+              ><input type="checkbox" data-layer="obstacles" checked />
+              Препятствия</label
+            ><label
+              ><input type="checkbox" data-layer="routes" checked />
+              Маршруты</label
+            ><label><input type="checkbox" data-layer="amr" /> Граф AMR</label
+            ><label
+              ><input type="checkbox" data-layer="zones" checked />
+              Резервирования</label
+            ><label
+              ><input type="checkbox" data-layer="labels" checked /> Подписи
+              роботов</label
+            ><label
+              ><input type="checkbox" data-layer="plan" checked /> Выбранный
+              план</label
+            >
+          </details>
+        </div>
+        <div id="mapLegend" class="map-legend"></div>
+        <div id="historyBadge" class="history-badge" hidden>
+          Просмотр записи <button id="returnLive">К текущему моменту →</button>
+        </div>
+        <div class="map-caption" id="mapHint">
+          Колесо — масштаб · перетаскивание — панорама · клик — выбор AGV
+        </div>
+        <div class="map-scale" id="mapScale"></div>
       </main>
+      <aside id="inspector" class="inspector">
+        <div class="panel-heading">
+          <h2 id="inspectorTitle">Обзор запуска</h2>
+          <button id="closeInspector" class="quiet" title="Свернуть">›</button>
+        </div>
+        <div id="inspectorBody"></div>
+      </aside>
+      <button id="openInspector" class="open-inspector" hidden>
+        ‹ Инспектор
+      </button>
     </div>
-
-    <script src="/static/app.js"></script>
+    <section id="analysis" class="analysis">
+      <div class="analysis-bar">
+        <div class="analysis-tabs">
+          <button class="tab active" data-analysis="solver">
+            Работа solver’а</button
+          ><button class="tab" data-analysis="orders">Заказы</button>
+        </div>
+        <span id="controlMode" class="control-status" aria-live="polite"></span
+        ><span id="journalCount" class="muted">0 вызовов</span
+        ><span class="spacer"></span
+        ><button id="toggleAnalysis" class="quiet">Свернуть ↓</button>
+      </div>
+      <div id="analysisContent" class="analysis-content">
+        <div class="chart-card">
+          <div class="chart-title">
+            <select id="chartMetric" aria-label="Метрика графика">
+              <option value="elapsed_s">Время поиска, мс</option>
+              <option value="expanded">Раскрытые состояния</option>
+              <option value="cost">Стоимость плана</option>
+              <option value="waiting_total_s">Ожидания AGV, с</option>
+              <option value="timeout_total">
+                Таймауты, накопительно
+              </option></select
+            ><span>симуляционное время →</span>
+          </div>
+          <canvas id="solverChart"></canvas>
+          <div id="chartStats" class="chart-stats"></div>
+        </div>
+        <div class="journal-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Вызов</th>
+                <th>Время</th>
+                <th>Результат</th>
+                <th>Поиск, мс</th>
+                <th>Состояния</th>
+              </tr>
+            </thead>
+            <tbody id="journalRows"></tbody>
+          </table>
+          <p id="emptyJournal" class="empty">
+            Запустите симуляцию, чтобы увидеть решения solver’а
+          </p>
+        </div>
+      </div>
+      <div id="ordersContent" class="orders-content" hidden></div>
+    </section>
+    <footer class="transport">
+      <div class="playback">
+        <button id="start" class="primary">▶ Запустить</button
+        ><button id="pause" class="secondary" disabled title="Пауза">Ⅱ</button
+        ><button id="stop" class="secondary" disabled title="Остановить">
+          ■</button
+        ><button
+          id="plannerConnection"
+          title="Имитировать потерю или восстановление связи с планировщиком"
+        >
+          Отключить связь</button
+        ><label class="speed-label"
+          ><select id="speed" aria-label="Скорость">
+            <option value="0.25">0,25×</option>
+            <option value="0.5">0,5×</option>
+            <option value="1" selected>1×</option>
+            <option value="2">2×</option>
+            <option value="5">5×</option>
+            <option value="10">10×</option></select
+          ><small id="actualSpeed">Факт: 0×</small></label
+        >
+      </div>
+      <div class="timeline">
+        <button id="rewind" class="quiet">↶ 10 с</button
+        ><span id="timeNow">00:00.0</span
+        ><input
+          id="timeline"
+          aria-label="Просмотр истории"
+          type="range"
+          min="0"
+          max="0"
+          step="0.5"
+          value="0"
+        /><span id="timeEnd">10:00</span>
+      </div>
+      <span id="statusPill" class="pill">Подготовка</span>
+    </footer>
+    <dialog id="settingsDialog">
+      <form id="settingsForm">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">ПЛАНИРОВЩИК</span>
+            <h2 id="solverDialogTitle">Параметры solver’а</h2>
+          </div>
+          <button type="button" id="closeSettings" class="quiet">✕</button>
+        </div>
+        <p id="solverDescription" class="muted"></p>
+        <div id="parameterFields" class="form-grid"></div>
+        <p>
+          <a
+            id="solverHelp"
+            href="/api/workspace/algorithm-help"
+            target="_blank"
+            >Справка: A*, параметры и автономное движение ↗</a
+          >
+        </p>
+        <div id="solverMetrics" class="muted"></div>
+        <p class="muted">
+          Параметры фиксируются на весь запуск. Скорость воспроизведения не
+          меняет лимит поиска.
+        </p>
+        <button type="submit" class="primary">Применить</button>
+      </form>
+    </dialog>
+    <dialog id="reportDialog">
+      <div class="panel-heading">
+        <h2>Отчёт сохранён</h2>
+        <button id="closeReport" class="quiet">✕</button>
+      </div>
+      <p>
+        JSON — полная запись для последующего анализа. HTML — читаемый отчёт с
+        графиками.
+      </p>
+      <div id="reportLinks" class="report-links"></div>
+      <p class="muted">
+        Файлы находятся в workspace/reports. Версия формата и единицы измерения
+        включены в JSON.
+      </p>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script type="module" src="/static/app.js"></script>
   </body>
 </html>

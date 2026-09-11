@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "kind": "fleetsim.scenario",
+  "id": "factory-mixed-20",
+  "name": "Исследование · 10 AGV + 10 AMR",
+  "description": "AGV: фиксированные циклы и радиус 0.8 м; AMR: свободный выбор пути. Независимые потоки заказов.",
+  "map_asset": "examples/maps/factory.dxf",
+  "graph_asset": "examples/graphs/factory_routes.geojson",
+  "amr_graph_asset": "examples/graphs/factory_amr_working.geojson",
+  "fleet": {
+    "robots": [
+      {
+        "id": "AGV01",
+        "type": "agv",
+        "color": "#dc3545",
+        "initial_pose": {
+          "x": 42.766666666666666,
+          "y": 27.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV02",
+        "type": "agv",
+        "color": "#df7b13",
+        "initial_pose": {
+          "x": 57.766666666666666,
+          "y": 27.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV03",
+        "type": "agv",
+        "color": "#a68900",
+        "initial_pose": {
+          "x": 133.07142857142856,
+          "y": 27.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV04",
+        "type": "agv",
+        "color": "#368445",
+        "initial_pose": {
+          "x": 78.39333333333333,
+          "y": 27.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV05",
+        "type": "agv",
+        "color": "#00a59b",
+        "initial_pose": {
+          "x": 312.5,
+          "y": 87.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV06",
+        "type": "agv",
+        "color": "#0087cd",
+        "initial_pose": {
+          "x": 342.9,
+          "y": 87.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV07",
+        "type": "agv",
+        "color": "#4552bb",
+        "initial_pose": {
+          "x": 357.1,
+          "y": 87.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV08",
+        "type": "agv",
+        "color": "#9541bf",
+        "initial_pose": {
+          "x": 312.9,
+          "y": 267.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV09",
+        "type": "agv",
+        "color": "#cd4e91",
+        "initial_pose": {
+          "x": 312.9,
+          "y": 327.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AGV10",
+        "type": "agv",
+        "color": "#293746",
+        "initial_pose": {
+          "x": 238.07142857142858,
+          "y": 27.5,
+          "theta": 0.0
+        },
+        "footprint": {
+          "length": 1.5,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.0,
+          "max_angular": 1.5,
+          "min_turn_radius": 0.8
+        },
+        "route_follower": {
+          "max_linear": 0.7,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR01",
+        "type": "amr",
+        "color": "#dc3545",
+        "initial_pose": {
+          "x": 107.5,
+          "y": 227.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G21_45"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR02",
+        "type": "amr",
+        "color": "#df7b13",
+        "initial_pose": {
+          "x": 222.5,
+          "y": 177.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G44_35"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR03",
+        "type": "amr",
+        "color": "#a68900",
+        "initial_pose": {
+          "x": 22.5,
+          "y": 142.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G4_28"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR04",
+        "type": "amr",
+        "color": "#368445",
+        "initial_pose": {
+          "x": 392.5,
+          "y": 192.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G78_38"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR05",
+        "type": "amr",
+        "color": "#00a59b",
+        "initial_pose": {
+          "x": 122.5,
+          "y": 127.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G24_25"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR06",
+        "type": "amr",
+        "color": "#0087cd",
+        "initial_pose": {
+          "x": 232.5,
+          "y": 297.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G46_59"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR07",
+        "type": "amr",
+        "color": "#4552bb",
+        "initial_pose": {
+          "x": 22.5,
+          "y": 227.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G4_45"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR08",
+        "type": "amr",
+        "color": "#9541bf",
+        "initial_pose": {
+          "x": 362.5,
+          "y": 392.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G72_78"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR09",
+        "type": "amr",
+        "color": "#cd4e91",
+        "initial_pose": {
+          "x": 322.5,
+          "y": 162.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G64_32"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      },
+      {
+        "id": "AMR10",
+        "type": "amr",
+        "color": "#293746",
+        "initial_pose": {
+          "x": 217.5,
+          "y": 102.5,
+          "theta": 0
+        },
+        "footprint": {
+          "length": 0.8,
+          "width": 0.6
+        },
+        "parameters": {
+          "max_linear": 1.2,
+          "max_angular": 1.5,
+          "start_node": "G43_20"
+        },
+        "route_follower": {
+          "max_linear": 1.0,
+          "max_angular": 1.4,
+          "waypoint_tolerance": 0.02,
+          "k_linear": 1.5,
+          "stop_and_turn_angle": 0.02
+        }
+      }
+    ]
+  },
+  "wms": {
+    "orders": [],
+    "fixed_loops": {
+      "mode": "mixed",
+      "solver": "whca",
+      "planning_tick_s": 0.5,
+      "cell_size_m": 3,
+      "safety_gap_m": 1,
+      "collision_layers": [
+        "OBS_WALL",
+        "OBS_COLUMN",
+        "OBS_RACK",
+        "OBS_MACHINE",
+        "OBS_PAINT",
+        "OBS_CHARGER",
+        "OBS_CONVEYOR"
+      ],
+      "assignments": [
+        {
+          "robot_id": "AGV01",
+          "route_id": "R01",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 37
+        },
+        {
+          "robot_id": "AGV02",
+          "route_id": "R02",
+          "start_index": 10,
+          "pickup_index": 10,
+          "dropoff_index": 142
+        },
+        {
+          "robot_id": "AGV03",
+          "route_id": "R03",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 107
+        },
+        {
+          "robot_id": "AGV04",
+          "route_id": "R04",
+          "start_index": 17,
+          "pickup_index": 17,
+          "dropoff_index": 79
+        },
+        {
+          "robot_id": "AGV05",
+          "route_id": "R05",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 32
+        },
+        {
+          "robot_id": "AGV06",
+          "route_id": "R06",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 62
+        },
+        {
+          "robot_id": "AGV07",
+          "route_id": "R07",
+          "start_index": 20,
+          "pickup_index": 20,
+          "dropoff_index": 67
+        },
+        {
+          "robot_id": "AGV08",
+          "route_id": "R08",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 47
+        },
+        {
+          "robot_id": "AGV09",
+          "route_id": "R09",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 47
+        },
+        {
+          "robot_id": "AGV10",
+          "route_id": "R10",
+          "start_index": 5,
+          "pickup_index": 5,
+          "dropoff_index": 154
+        }
+      ],
+      "stations": [
+        {
+          "id": "S01",
+          "node_id": "G21_45"
+        },
+        {
+          "id": "S02",
+          "node_id": "G44_35"
+        },
+        {
+          "id": "S03",
+          "node_id": "G4_28"
+        },
+        {
+          "id": "S04",
+          "node_id": "G78_38"
+        },
+        {
+          "id": "S05",
+          "node_id": "G24_25"
+        },
+        {
+          "id": "S06",
+          "node_id": "G46_59"
+        },
+        {
+          "id": "S07",
+          "node_id": "G4_45"
+        },
+        {
+          "id": "S08",
+          "node_id": "G72_78"
+        },
+        {
+          "id": "S09",
+          "node_id": "G64_32"
+        },
+        {
+          "id": "S10",
+          "node_id": "G43_20"
+        }
+      ],
+      "streams": [
+        {
+          "kind": "agv",
+          "robot_id": "AGV01",
+          "pickup_index": 5,
+          "dropoff_index": 37,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV02",
+          "pickup_index": 10,
+          "dropoff_index": 142,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV03",
+          "pickup_index": 5,
+          "dropoff_index": 107,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV04",
+          "pickup_index": 17,
+          "dropoff_index": 79,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV05",
+          "pickup_index": 5,
+          "dropoff_index": 32,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV06",
+          "pickup_index": 5,
+          "dropoff_index": 62,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV07",
+          "pickup_index": 20,
+          "dropoff_index": 67,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV08",
+          "pickup_index": 5,
+          "dropoff_index": 47,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV09",
+          "pickup_index": 5,
+          "dropoff_index": 47,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "agv",
+          "robot_id": "AGV10",
+          "pickup_index": 5,
+          "dropoff_index": 154,
+          "start_s": 0,
+          "period_s": 80,
+          "service_time_s": 3
+        },
+        {
+          "kind": "amr",
+          "pickup": "S01",
+          "dropoff": "S06",
+          "start_s": 0,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S02",
+          "dropoff": "S07",
+          "start_s": 2,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S03",
+          "dropoff": "S08",
+          "start_s": 4,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S04",
+          "dropoff": "S09",
+          "start_s": 6,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S05",
+          "dropoff": "S10",
+          "start_s": 8,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S06",
+          "dropoff": "S01",
+          "start_s": 10,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S07",
+          "dropoff": "S02",
+          "start_s": 12,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S08",
+          "dropoff": "S03",
+          "start_s": 14,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S09",
+          "dropoff": "S04",
+          "start_s": 16,
+          "period_s": 100,
+          "service_time_s": 2
+        },
+        {
+          "kind": "amr",
+          "pickup": "S10",
+          "dropoff": "S05",
+          "start_s": 18,
+          "period_s": 100,
+          "service_time_s": 2
+        }
+      ]
+    }
+  },
+  "simulation": {
+    "duration_s": 600,
+    "collision_mode": "count_only"
+  }
+}

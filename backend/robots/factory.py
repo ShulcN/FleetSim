@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+from math import pi
 from pathlib import Path
 
 from .base import RobotBase, RobotState
 from .controllers import RouteFollower, RouteFollowerConfig
 from .differential_drive import DifferentialDriveKinematics
+from .ackermann import AckermannKinematics
 
 
 def create_robot_from_config(raw: dict) -> RobotBase:
@@ -16,7 +18,7 @@ def create_robot_from_config(raw: dict) -> RobotBase:
     params = raw.get("parameters", {})
     follower_params = raw.get("route_follower", {})
 
-    if robot_type != "differential_drive":
+    if robot_type not in ("differential_drive", "amr", "agv", "ackermann"):
         raise ValueError(f"Unsupported robot type for MVP: {robot_type}")
 
     state = RobotState(
@@ -39,13 +41,30 @@ def create_robot_from_config(raw: dict) -> RobotBase:
         max_linear=float(params.get("max_linear", 1.0)),
         max_angular=float(params.get("max_angular", 1.5)),
     )
+    if robot_type in ("agv", "ackermann"):
+        kinematics = AckermannKinematics(
+            max_linear=float(params.get("max_linear", 1)),
+            min_turn_radius=float(params.get("min_turn_radius", 0.8)),
+            max_angular=float(params.get("max_angular", 1.5)),
+        )
+    state.parameters = {
+        **params,
+        "robot_class": "agv" if robot_type in ("agv", "ackermann") else "amr",
+    }
     follower = RouteFollower(
         RouteFollowerConfig(
             waypoint_tolerance=float(follower_params.get("waypoint_tolerance", 0.18)),
-            max_linear=float(follower_params.get("max_linear", params.get("max_linear", 0.8))),
-            max_angular=float(follower_params.get("max_angular", params.get("max_angular", 1.4))),
+            max_linear=float(
+                follower_params.get("max_linear", params.get("max_linear", 0.8))
+            ),
+            max_angular=float(
+                follower_params.get("max_angular", params.get("max_angular", 1.4))
+            ),
             k_linear=float(follower_params.get("k_linear", 0.8)),
             k_angular=float(follower_params.get("k_angular", 2.0)),
+            stop_and_turn_angle=float(
+                follower_params.get("stop_and_turn_angle", pi / 3.0)
+            ),
         )
     )
     return RobotBase(state, kinematics, follower)
